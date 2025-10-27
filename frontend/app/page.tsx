@@ -26,7 +26,7 @@ export default function Home() {
     <main className="min-h-screen bg-linear-to-br from-white via-slate-50 to-indigo-50">
       <div className="container mx-auto max-w-7xl">
         {/* Header */}
-        <header className="shadow-sm px-4 sm:px-7 py-4 sm:py-5 mb-3 relative">
+ <header className="shadow-sm px-4 sm:px-7 py-4 sm:py-5 mb-3 relative">
           <div className="flex flex-wrap items-center justify-between gap-3 sm:gap-4">
             {/* Brand */}
             <div className="flex items-center gap-3 sm:gap-4">
@@ -99,7 +99,7 @@ export default function Home() {
           </div>
         </header>
 
-        {/* ✅ Create Poll Form */}
+        {/* Create Poll Form */}
         {showCreateForm && (
           <div className="my-8 animate-in slide-in-from-top duration-300 mx-auto max-w-[90%] lg:max-w-1/2">
             <CreatePollForm onClose={() => setShowCreateForm(false)} />
@@ -107,11 +107,11 @@ export default function Home() {
         )}
 
 
-        {/* ✅ Polls Section */}
+        {/* Polls Section */}
         <div className="px-9 py-10">
           <div className='flex justify-between items-baseline'>
             <h2 className="text-4xl font-semibold text-gray-900 mb-8">Active Polls</h2>
-            {/* ✅ Stats Bar */}
+            {/* Stats Bar */}
             {polls.length > 0 && (
               <div className="flex items-center justify-center gap-8 sm:gap-12 mb-10 text-gray-700">
                 <div className="flex items-center gap-1.5">
@@ -151,8 +151,8 @@ export default function Home() {
           )}
         </div>
 
-        {/* ✅ Footer */}
-        <footer className="mt-20 border-t border-gray-200">
+        {/* Footer */}
+         <footer className="mt-20 border-t border-gray-200">
           <div className="px-7 py-12">
             <div className="max-w-6xl mx-auto">
               {/* Top Section */}

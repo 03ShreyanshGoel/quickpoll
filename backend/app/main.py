@@ -25,14 +25,25 @@ app = FastAPI(
 )
 
 # CORS
-origins = os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")
+origins = os.getenv("CORS_ORIGINS", "").split(",")
+
+# Default local + production origins
+default_origins = [
+    "http://localhost:3000",
+    "https://try-quickpoll.vercel.app"
+]
+
+# Merge defaults with env var origins (if provided)
+allowed_origins = [o.strip() for o in (origins + default_origins) if o.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 # ============= REST API ENDPOINTS =============
 

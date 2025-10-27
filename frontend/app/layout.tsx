@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: 'Create polls, vote, and see results in real-time',
 };
 
-// ✅ Import Inter font
+// Import Inter font
 const inter = Inter({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'], // Adjust as needed
