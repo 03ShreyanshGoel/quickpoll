@@ -1,5 +1,3 @@
----
-
 # 🚀 QuickPoll — Real-Time Opinion Polling Platform
 
 A **full-stack real-time polling platform** built using **FastAPI**, **Next.js**, and **WebSockets**.
