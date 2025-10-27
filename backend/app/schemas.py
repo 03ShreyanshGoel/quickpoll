@@ -37,29 +37,9 @@ class VoteCreate(BaseModel):
     option_id: int
     user_id: str
 
-class VoteResponse(BaseModel):
-    id: int
-    poll_id: int
-    option_id: int
-    user_id: str
-    created_at: datetime
-    
-    class Config:
-        from_attributes = True
-
 class LikeCreate(BaseModel):
     user_id: str
 
-class LikeResponse(BaseModel):
-    id: int
-    poll_id: int
-    user_id: str
-    created_at: datetime
-    
-    class Config:
-        from_attributes = True
-
 class WebSocketMessage(BaseModel):
-    type: str  # "vote", "like", "poll_created"
-    poll_id: int
+    type: str
     data: dict

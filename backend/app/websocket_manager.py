@@ -1,55 +1,44 @@
 from fastapi import WebSocket
-from typing import List, Dict
+from fastapi.encoders import jsonable_encoder
+from typing import List
 import json
+import logging
+
+logger = logging.getLogger(__name__)
 
 class ConnectionManager:
     def __init__(self):
         self.active_connections: List[WebSocket] = []
-        self.poll_subscribers: Dict[int, List[WebSocket]] = {}
 
     async def connect(self, websocket: WebSocket):
         await websocket.accept()
         self.active_connections.append(websocket)
+        logger.info(f"✅ New WebSocket connection. Total: {len(self.active_connections)}")
 
     def disconnect(self, websocket: WebSocket):
         if websocket in self.active_connections:
             self.active_connections.remove(websocket)
-        
-        # Remove from all poll subscriptions
-        for poll_id in list(self.poll_subscribers.keys()):
-            if websocket in self.poll_subscribers[poll_id]:
-                self.poll_subscribers[poll_id].remove(websocket)
-            if not self.poll_subscribers[poll_id]:
-                del self.poll_subscribers[poll_id]
+            logger.info(f"🔌 WebSocket disconnected. Remaining: {len(self.active_connections)}")
 
-    def subscribe_to_poll(self, websocket: WebSocket, poll_id: int):
-        if poll_id not in self.poll_subscribers:
-            self.poll_subscribers[poll_id] = []
-        if websocket not in self.poll_subscribers[poll_id]:
-            self.poll_subscribers[poll_id].append(websocket)
-
-    async def broadcast_to_all(self, message: dict):
+    async def broadcast(self, message: dict):
+        """Broadcast message to ALL connected clients"""
         disconnected = []
+        
+        # ✅ Fix: safely handle datetime, UUID, and other non-JSON-serializable types
+        safe_message = jsonable_encoder(message)
+        message_json = json.dumps(safe_message)
+        
+        logger.info(f"📡 Broadcasting to {len(self.active_connections)} clients: {message.get('type', 'unknown')}")
+        
         for connection in self.active_connections:
             try:
-                await connection.send_json(message)
-            except:
+                await connection.send_text(message_json)
+                logger.debug("✅ Sent to client")
+            except Exception as e:
+                logger.error(f"❌ Failed to send to client: {e}")
                 disconnected.append(connection)
         
-        for connection in disconnected:
-            self.disconnect(connection)
-
-    async def broadcast_to_poll(self, poll_id: int, message: dict):
-        if poll_id not in self.poll_subscribers:
-            return
-        
-        disconnected = []
-        for connection in self.poll_subscribers[poll_id]:
-            try:
-                await connection.send_json(message)
-            except:
-                disconnected.append(connection)
-        
+        # Clean up disconnected clients
         for connection in disconnected:
             self.disconnect(connection)
 

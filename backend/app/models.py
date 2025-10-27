@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from .database import Base
@@ -34,7 +34,7 @@ class Vote(Base):
     id = Column(Integer, primary_key=True, index=True)
     poll_id = Column(Integer, ForeignKey("polls.id"), nullable=False)
     option_id = Column(Integer, ForeignKey("options.id"), nullable=False)
-    user_id = Column(String, nullable=False)  # Session-based user identifier
+    user_id = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     
     poll = relationship("Poll", back_populates="votes")

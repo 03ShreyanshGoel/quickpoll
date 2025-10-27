@@ -2,7 +2,6 @@ from sqlalchemy.orm import Session
 from . import models, schemas
 from typing import List, Optional
 
-# Poll CRUD
 def get_poll(db: Session, poll_id: int) -> Optional[models.Poll]:
     return db.query(models.Poll).filter(models.Poll.id == poll_id).first()
 
@@ -26,15 +25,6 @@ def create_poll(db: Session, poll: schemas.PollCreate) -> models.Poll:
     db.refresh(db_poll)
     return db_poll
 
-def delete_poll(db: Session, poll_id: int) -> bool:
-    poll = get_poll(db, poll_id)
-    if poll:
-        db.delete(poll)
-        db.commit()
-        return True
-    return False
-
-# Vote CRUD
 def create_vote(db: Session, poll_id: int, vote: schemas.VoteCreate) -> Optional[models.Vote]:
     # Check if user already voted
     existing_vote = db.query(models.Vote).filter(
@@ -66,13 +56,6 @@ def create_vote(db: Session, poll_id: int, vote: schemas.VoteCreate) -> Optional
     db.refresh(db_vote)
     return db_vote
 
-def get_user_vote(db: Session, poll_id: int, user_id: str) -> Optional[models.Vote]:
-    return db.query(models.Vote).filter(
-        models.Vote.poll_id == poll_id,
-        models.Vote.user_id == user_id
-    ).first()
-
-# Like CRUD
 def toggle_like(db: Session, poll_id: int, user_id: str) -> tuple[bool, int]:
     """Returns (is_liked, new_like_count)"""
     existing_like = db.query(models.Like).filter(
@@ -95,6 +78,12 @@ def toggle_like(db: Session, poll_id: int, user_id: str) -> tuple[bool, int]:
         poll.like_count += 1
         db.commit()
         return True, poll.like_count
+
+def get_user_vote(db: Session, poll_id: int, user_id: str) -> Optional[models.Vote]:
+    return db.query(models.Vote).filter(
+        models.Vote.poll_id == poll_id,
+        models.Vote.user_id == user_id
+    ).first()
 
 def get_user_like(db: Session, poll_id: int, user_id: str) -> Optional[models.Like]:
     return db.query(models.Like).filter(
