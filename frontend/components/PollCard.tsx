@@ -201,7 +201,6 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import clsx from 'clsx';
-import { useRouter } from 'next/navigation';
 
 // Pastel palette for progress bars
 const PASTEL_PALETTE = [
@@ -224,7 +223,6 @@ interface PollCardProps {
 }
 
 export function PollCard({ poll }: PollCardProps) {
-  const router = useRouter();
   const [userId] = useState(() => generateUserId());
   const [voted, setVoted] = useState(false);
   const [liked, setLiked] = useState(false);
@@ -288,7 +286,6 @@ export function PollCard({ poll }: PollCardProps) {
         {/* ---------------------- HEADER ---------------------- */}
         <CardHeader
           className="p-6 pb-4"
-          onClick={() => router.push(`/polls/${poll.id}`)}
         >
           <div className="flex items-start justify-between mb-2">
             <h3 className="flex-1 text-lg font-semibold text-gray-900 group-hover:text-indigo-700 transition-colors leading-tight">
