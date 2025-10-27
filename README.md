@@ -67,32 +67,52 @@ It enables users to create polls, vote, like polls, and view live results as oth
 quickpoll/
 ├── backend/
 │   ├── app/
-│   │   ├── main.py              # FastAPI app entrypoint
-│   │   ├── models.py            # ORM models
-│   │   ├── schemas.py           # Pydantic schemas
-│   │   ├── crud.py              # CRUD utilities
-│   │   ├── database.py          # DB connection setup
-│   │   └── websocket_manager.py # WebSocket broadcaster
-│   ├── requirements.txt
-│   └── .env
+│   │   ├── __init__.py
+│   │   ├── main.py               # FastAPI entrypoint
+│   │   ├── models.py             # SQLAlchemy ORM models
+│   │   ├── schemas.py            # Pydantic schemas
+│   │   ├── crud.py               # CRUD operations for polls
+│   │   ├── database.py           # Database configuration & session setup
+│   │   └── websocket_manager.py  # WebSocket connections and broadcasting
+│   ├── requirements.txt          # Backend dependencies
+│   ├── .env.example              # Backend environment variable template
+│   ├── quickpoll.db              # SQLite database (local dev)
+│   └── .gitignore
+│
 ├── frontend/
-│   ├── src/
-│   │   ├── app/
-│   │   │   ├── page.tsx         # Main UI
-│   │   │   └── layout.tsx       # Root layout
-│   │   ├── components/
-│   │   │   ├── CreatePollForm.tsx
-│   │   │   ├── PollCard.tsx
-│   │   │   └── PollList.tsx
-│   │   ├── lib/
-│   │   │   ├── api.ts           # HTTP client
-│   │   │   ├── websocket.ts     # WebSocket client
-│   │   │   └── utils.ts         # Helpers
-│   │   └── hooks/
-│   │       └── useRealtimePolls.ts
-│   ├── package.json
-│   └── .env.local
-└── README.md
+│   ├── app/
+│   │   ├── layout.tsx            # Root layout (includes font, globals)
+│   │   ├── page.tsx              # Main page (polls listing, create form)
+│   │   └── globals.css           # Global CSS styles
+│   │
+│   ├── components/
+│   │   ├── ui/                   # Shadcn/UI components
+│   │   ├── CreatePollForm.tsx    # Poll creation form
+│   │   ├── PollCard.tsx          # Poll display component
+│   │   └── PollList.tsx          # Active polls list
+│   │
+│   ├── hooks/
+│   │   └── useRealtimePolls.ts   # React hook to sync real-time poll data
+│   │
+│   ├── lib/
+│   │   ├── api.ts                # REST API utilities (Axios/Fetch)
+│   │   ├── websocket.ts          # WebSocket connection setup
+│   │   └── utils.ts              # Shared helper functions
+│   │
+│   ├── public/
+│   │   ├── favicon.ico
+│   │
+│   ├── .env.local.example        # Frontend environment variable template
+│   ├── package.json              # Project dependencies
+│   ├── package-lock.json
+│   ├── next.config.ts            # Next.js configuration
+│   ├── tailwind.config.ts        # TailwindCSS config
+│   ├── postcss.config.mjs        # PostCSS plugins
+│   ├── tsconfig.json             # TypeScript configuration
+│   ├── eslint.config.mjs         # ESLint configuration
+│   └── .gitignore
+│
+└── README.md                     # Documentation (architecture, setup, etc.)
 ```
 
 ---
@@ -301,5 +321,3 @@ For bug reports, open an issue.
 
 **Built with ❤️ using FastAPI, Next.js, and WebSockets.**
 *Designed for scalable, real-time, event-driven applications.*
-
----
